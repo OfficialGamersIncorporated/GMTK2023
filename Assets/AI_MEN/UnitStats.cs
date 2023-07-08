@@ -14,7 +14,7 @@ public class UnitStats : ScriptableObject
     public int CON;
     [Tooltip("Agility increases movement speed"), Range(1.0f, 10.0f)]
     public int AGL;
-    [Tooltip("Base hitpoints"), Range(1.0f, 25.0f)]
+    [Tooltip("Base hitpoints"), Range(1.0f, 100.0f)]
     public float baseHP;
     [Tooltip("Base movespeed"), Range(0.25f, 10.0f)]
     public float baseMovementSpeed;
