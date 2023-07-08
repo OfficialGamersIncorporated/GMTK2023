@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Room : MonoBehaviour {
     public enum EnteranceBearing { North, South, East, West };
@@ -15,6 +16,10 @@ public class Room : MonoBehaviour {
     };
     [HideInInspector] // enable debugging in the inspector to view this in the editor.
     public List<RoomConnection> ConnectedRooms = new List<RoomConnection>();
+
+    public TextMeshPro FCost;
+    public TextMeshPro HCost;
+    public TextMeshPro GCost;
 
 
     public RoomConnection FindConnectedRoomByBearing(EnteranceBearing bearing) {
