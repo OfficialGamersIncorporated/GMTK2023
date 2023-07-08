@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoomPlacer : MonoBehaviour {
 
-    public Transform RoomToPlace;
+    public Room RoomToPlace;
     public Vector2 RoomGridSize = new Vector2(12, 8);
     Camera cam;
 
@@ -13,6 +13,15 @@ public class RoomPlacer : MonoBehaviour {
         Vector3 rounded = new Vector3(Mathf.Round(vector.x), Mathf.Round(vector.y), Mathf.Round(vector.z));
         rounded.Scale(roundTo);
         return rounded;
+    }
+    void TryPlaceRoom(Vector3 snappedHoverPoint) {
+        Collider2D[] overlappingColliders = Physics2D.OverlapPointAll(snappedHoverPoint, LayerMask.GetMask("Room"));
+        foreach(Collider2D overlappingCollider in overlappingColliders) {
+            if(overlappingCollider.CompareTag("Room")) return;
+        }
+
+        Room newRoom = Instantiate<Room>(RoomToPlace, snappedHoverPoint, Quaternion.identity, MainGrid.Singleton.transform);
+        newRoom.RefereshEnterances();
     }
     void Start() {
         cam = GetComponent<Camera>();
@@ -23,8 +32,7 @@ public class RoomPlacer : MonoBehaviour {
         Vector3 SnappedHoverPoint = RoundV3To(mouseWorldPos, new Vector3(RoomGridSize.x, RoomGridSize.y, 1) ); // a position snapped to the the grid rooms are placed on.
 
         if(Input.GetButtonDown("Fire1")) {
-            Transform newRoom = Instantiate<Transform>(RoomToPlace, SnappedHoverPoint, Quaternion.identity, MainGrid.Singleton.transform);
-
+            TryPlaceRoom(SnappedHoverPoint);
         }
     }
 }
