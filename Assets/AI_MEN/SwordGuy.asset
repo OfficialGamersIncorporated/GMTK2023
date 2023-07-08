@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   STR: 2
   DEX: 0
-  CON: 0
+  CON: 1
   AGL: 2
+  baseHP: 5
+  baseMovementSpeed: 1

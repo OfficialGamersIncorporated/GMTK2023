@@ -1,30 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
+using UnityEngine.UI;
 
 public class WeaponBehavior : MonoBehaviour
 {
     public bool isAttacking = false;
 
-    [SerializeField] WeaponStats weaponStats;
+    public WeaponStats weaponStats;
 
-    GoonBehavior parentBehavior;
+    [SerializeField] GoonBehavior ownerBehavior;
 
     private void Start()
     {
-        parentBehavior = transform.root.GetComponent<GoonBehavior>();
+        ownerBehavior = transform.root.GetComponent<GoonBehavior>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log("COLLISION DETECTED WITH: " + collider.name);
-        if (collider.gameObject.layer == parentBehavior.targetLayer)
+        if ((ownerBehavior.targetLayerMask.value & 1 << collider.gameObject.layer) > 0)
         {
+            Debug.Log("HIT TARGET LAYER");
             GoonBehavior goon = collider.GetComponent<GoonBehavior>();
             if (goon)
             {
                 Debug.Log("HIT GOON: " + goon.name);
-                parentBehavior.targetHit(goon);
+                ownerBehavior.damageTarget(goon);
             }
         }
     }

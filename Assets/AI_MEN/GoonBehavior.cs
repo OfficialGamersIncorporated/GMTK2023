@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GoonBehavior : MonoBehaviour
@@ -8,13 +9,16 @@ public class GoonBehavior : MonoBehaviour
     [SerializeField] GameControl gameControl;
 
     //BASE STATS
-    [SerializeField] Stats stats;
-    [SerializeField] float baseHP;
-    [SerializeField] float baseMovementSpeed;
+    [SerializeField] UnitStats unitStats;
 
     //GAMEPLAY STATS
+    [SerializeField] int currentSTR;
+    [SerializeField] int currentDEX;
+    [SerializeField] int currentCON;
+    [SerializeField] int currentAGL;
     [SerializeField] float damage;
     [SerializeField] float attackSpeed;
+    [SerializeField] float attackRange;
     [SerializeField] float maxHitpoints;
     [SerializeField] float hitpoints;
     [SerializeField] float moveSpeed;
@@ -31,27 +35,25 @@ public class GoonBehavior : MonoBehaviour
 
     //TARGETING
     [SerializeField] GameObject target;
-    public LayerMask targetLayer;
+    public LayerMask targetLayerMask;
 
     //UTILITY
     [SerializeField] GameObject weaponHolder;
-    float distanceToTarget;
-    bool canAttack = true;
-
-    // WEAPON BASED STATS
-    float attackRange;
+    [SerializeField] float distanceToTarget;
+    [SerializeField] bool canAttack = true;
+    [SerializeField] bool hasTarget = false;
 
 
     private void OnEnable()
     {
         gameControl = GameObject.Find("GameControl").GetComponent<GameControl>();
 
-        weaponStats = gameObject.GetComponentInChildren<WeaponStats>();
-        armorStats = gameObject.GetComponentInChildren<ArmorStats>();
+        weaponStats = weapon.GetComponent<WeaponBehavior>().weaponStats;
+        armorStats = armor.GetComponent<ArmorBehavior>().armorStats;
 
         ApplyStats();
-        hitpoints = maxHitpoints; // NEED TO ADD BONUS HP FROM ARMOR EQUIP
-        attackRange = weaponStats.range;
+        hitpoints = maxHitpoints;
+        
 
         weaponAnimator = weapon.GetComponent<Animator>();
         weaponAnimator.SetFloat("attackSpeed", attackSpeed);
@@ -60,31 +62,35 @@ public class GoonBehavior : MonoBehaviour
 
     void Update()
     {
-        if (gameControl.waveRunning && target == null)
+        if (gameControl.waveRunning && !hasTarget)
         {
-            target = Physics2D.CircleCast(transform.position, perception, Vector2.zero, perception, targetLayer).collider.gameObject;
+            GetTarget();
         }
 
-        if (target != null)
+        if (hasTarget)
         {
-            distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
-            MoveToRange(attackRange, moveSpeed);
-            weaponHolder.transform.up = target.transform.position - transform.position;
-        }
+            if (!target.activeSelf)
+            {
+                GetTarget();
+            }
 
-        if (distanceToTarget < attackRange && canAttack)
-        {
-            weaponAnimator.SetTrigger("Attack");
-            canAttack = false;
-            StartCoroutine(AttackCooldown());
+            MoveToRange();
+            if (distanceToTarget < attackRange && canAttack)
+            {
+                weaponAnimator.SetTrigger("Attack");
+                canAttack = false;
+                StartCoroutine(AttackCooldown());
+            }
         }
     }
 
-    void MoveToRange(float attackRangeParam, float moveSpeedParam)
+    void MoveToRange()
     {
-        if (distanceToTarget > attackRangeParam)
+        distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
+        weaponHolder.transform.up = target.transform.position - transform.position;
+        if (distanceToTarget > attackRange)
         {
-            transform.position = Vector2.MoveTowards(transform.position, target.transform.position, Time.deltaTime * moveSpeedParam);
+            transform.position = Vector2.MoveTowards(transform.position, target.transform.position, Time.deltaTime * moveSpeed);
         }
     }
 
@@ -102,34 +108,51 @@ public class GoonBehavior : MonoBehaviour
 
     void ApplyStats()
     {
-        Debug.Log("STR: " + stats.STR);
-        Debug.Log("DEX: " + stats.DEX);
-        Debug.Log("CON: " + stats.CON);
-        Debug.Log("AGL: " + stats.AGL);
-        stats.STR += armorStats.bonusSTR;
-        stats.DEX += armorStats.bonusDEX;
-        stats.CON += armorStats.bonusCON;
-        stats.AGL += armorStats.bonusAGL;
-        Debug.Log("STR: " + stats.STR);
-        Debug.Log("DEX: " + stats.DEX);
-        Debug.Log("CON: " + stats.CON);
-        Debug.Log("AGL: " + stats.AGL);
+        currentSTR = unitStats.STR + armorStats.bonusSTR;
+        currentDEX = unitStats.DEX + armorStats.bonusDEX;
+        currentCON = unitStats.CON + armorStats.bonusCON;
+        currentAGL = unitStats.AGL + armorStats.bonusAGL;
+        //Debug.Log(name + "'s STR: " + currentSTR);
+        //Debug.Log(name + "'s DEX: " + currentDEX);
+        //Debug.Log(name + "'s CON: " + currentCON);
+        //Debug.Log(name + "'s AGL: " + currentAGL);
 
-        damage = stats.STR + weaponStats.weaponDamage;
-        attackSpeed = ((1.2f * stats.DEX) / 2) * 1 + weaponStats.weaponAttackSpeed;
-        maxHitpoints = (stats.CON * 1.2f) + baseHP;
-        moveSpeed = ((1.2f * stats.AGL) / 2) * 1 + baseMovementSpeed;
+        //Debug.Log(weapon.name + "'s damage: " + weaponStats.weaponDamage);
+        //Debug.Log(weapon.name + "'s attackSpeed: " + weaponStats.weaponAttackSpeed);
+        //Debug.Log(weapon.name + "'s range: " + weaponStats.weaponRange);
+
+        damage = currentSTR + weaponStats.weaponDamage;
+        attackSpeed = ((1.2f * currentDEX) / 2) * 1 + weaponStats.weaponAttackSpeed;
+        maxHitpoints = (currentCON * 1.2f) + unitStats.baseHP;
+        moveSpeed = (((1.2f * currentAGL) / 2) * 1 + unitStats.baseMovementSpeed) / 4;
+
+        attackRange = weaponStats.weaponRange;
     }
 
-    public void targetHit(GoonBehavior targetStats)
+    void GetTarget()
+    {
+        Collider2D targetCollider = Physics2D.CircleCast(transform.position, perception, Vector2.zero, perception, targetLayerMask).collider;
+        if (targetCollider != null)
+        {
+            target = targetCollider.gameObject;
+            hasTarget = true;
+        }
+        else
+        {
+            hasTarget = false;
+        }
+    }
+
+    public void damageTarget(GoonBehavior targetStats)
     {
         targetStats.TakeHit(damage);
     }
 
     IEnumerator AttackCooldown()
     {
-        yield return new WaitForSeconds(attackSpeed);
+        yield return new WaitForSeconds(1 / attackSpeed);
         canAttack = true;
+        Debug.Log("ATTACK COOLDOWN COMPLETE");
     }
 
 }

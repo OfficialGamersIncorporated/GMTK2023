@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 452eedff8d25d374ea1d8eeead00b134, type: 3}
-  m_Name: TestWeapon
+  m_Script: {fileID: 11500000, guid: a60601d9a7bbbb64aa433ad270a7bfb2, type: 3}
+  m_Name: Fullplate
   m_EditorClassIdentifier: 
-  weaponDamage: 2
-  weaponAttackSpeed: 0.75
-  weaponRange: 1
+  bonusSTR: 0
+  bonusDEX: 0
+  bonusCON: 2
+  bonusAGL: 0
