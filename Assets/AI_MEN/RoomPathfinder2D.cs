@@ -17,7 +17,7 @@ public class RoomPathfinder2D {
         List<Vector3> path = new List<Vector3>();
 
         void crawlNodePathRecursive(RoomPathfindingNode node) {
-            path.Add(node.Room.transform.position);
+            path.Insert(0, node.Room.transform.position);
             if(node.Parent != null)
                 crawlNodePathRecursive(node.Parent);
         }
@@ -126,9 +126,11 @@ public class RoomPathfinder2D {
         }
 
         DisplayPathRecursive(finalNode);
-        return CalculateVector3PathFromFinalNode(finalNode);
-        
-        //return path;
+        List<Vector3> path = CalculateVector3PathFromFinalNode(finalNode);
+        //path.Insert(0, startPos);
+        path.Add(targetPos);
+
+        return path;
 
     }
 
@@ -147,7 +149,6 @@ class RoomPathfindingNode {
     public float GetFCost(Vector3 endPos) {
         float hCost = GetHCost(endPos);
         float gCost = GetGCost();
-        Debug.Log(Room.FCost);
         Room.FCost.text = (hCost + gCost).ToString();
         Room.GCost.text = GCost.ToString();
         Room.HCost.text = hCost.ToString();
