@@ -7,6 +7,8 @@ public class GameControl: MonoBehaviour
     private int roundNumber = 0;
     public List<WaveDefinition> waves;
 
+    public bool waveRunning;
+
     
     // Start is called before the first frame update
     void Start()
@@ -17,7 +19,7 @@ public class GameControl: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(Input.GetAxis("Vertical"));
+
     }
 
     /**
