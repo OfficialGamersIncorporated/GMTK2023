@@ -10,7 +10,6 @@ public class CameraController : MonoBehaviour {
 
     }
     void LateUpdate() {
-        print(Input.GetAxis("Vertical"));
         transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * CameraMoveSpeed * Time.deltaTime;
     }
 }
