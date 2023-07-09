@@ -97,5 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b883ebdae798ea4a95c556634339287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isRanged: 0
   isAttacking: 0
   weaponStats: {fileID: 11400000, guid: d0f9b470d5b41734b8cd287d5a782c18, type: 2}
+  projectile: {fileID: 3050299234889562828, guid: c1e88d834cdb7b84389ffe9c4ad5ac17, type: 3}
+  launchVelocity: 0

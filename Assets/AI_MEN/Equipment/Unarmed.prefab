@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 930466909634037416}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -99,9 +99,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b883ebdae798ea4a95c556634339287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isRanged: 0
   isAttacking: 0
   weaponStats: {fileID: 11400000, guid: 6645e87f87c57694f8fcbbdee8520a1a, type: 2}
-  ownerBehavior: {fileID: 0}
+  projectile: {fileID: 3050299234889562828, guid: c1e88d834cdb7b84389ffe9c4ad5ac17, type: 3}
+  launchVelocity: 0
 --- !u!95 &7026282292691596448
 Animator:
   serializedVersion: 5
@@ -112,7 +114,7 @@ Animator:
   m_GameObject: {fileID: 930466909634037416}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c586e0117bcd1d947b4511e62c2b976e, type: 2}
+  m_Controller: {fileID: 9100000, guid: c0834288cc77eba4eb285553f9ca295a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

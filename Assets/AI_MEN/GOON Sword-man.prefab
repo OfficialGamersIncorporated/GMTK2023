@@ -148,10 +148,10 @@ MonoBehaviour:
   weapon: {fileID: 0}
   armor: {fileID: 0}
   target: {fileID: 0}
+  targetVector2: {x: 0, y: 0}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  weaponHolder: {fileID: 1782861571686000453}
   distanceToTarget: 0
   canAttack: 1
   hasTarget: 0
@@ -198,7 +198,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8655166545427860745}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
