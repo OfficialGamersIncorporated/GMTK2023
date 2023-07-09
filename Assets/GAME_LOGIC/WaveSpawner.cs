@@ -15,8 +15,8 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] float spawnInterval;
     [SerializeField] float spawnTimer;
     [SerializeField] float gateTimer = 5f;
-    [SerializeField] float waveCooldownStat = 00f;
-    [SerializeField] float waveCooldown;
+    [SerializeField] float waveCooldown = 00f;
+    [SerializeField] float waveCooldownTimer;
 
 
     private bool gateOpen = false;
@@ -55,7 +55,7 @@ public class WaveSpawner : MonoBehaviour
 
         if (waveTimer <= 0 && !gateOpen)
         {
-            gate.GetComponent<Collider>().enabled = false;
+            gate.GetComponent<Collider2D>().enabled = false;
             gateOpen = true;
         }
         if (gateOpen)
@@ -64,16 +64,16 @@ public class WaveSpawner : MonoBehaviour
         }
         if (gateTimer <= 0)
         {
-            gate.GetComponent<Collider>().enabled = true;
+            gate.GetComponent<Collider2D>().enabled = true;
             gateOpen = false;
             gateTimer = 5;
         }
 
         if (waveTimer <= 0)
         {
-            waveCooldown -= Time.deltaTime;
+            waveCooldownTimer -= Time.deltaTime;
         }
-        if (waveCooldown <= 0)
+        if (waveCooldownTimer <= 0)
         {
             GenerateWave();
         }
@@ -110,7 +110,7 @@ public class WaveSpawner : MonoBehaviour
             }
         }
 
-        waveCooldown = waveCooldownStat;
+        waveCooldownTimer = waveCooldown;
         enemiesToSpawn.Clear();
         enemiesToSpawn = generatedEnemies;
     }

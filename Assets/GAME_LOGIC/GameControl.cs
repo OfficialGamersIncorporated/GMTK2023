@@ -28,5 +28,6 @@ public class GameControl: MonoBehaviour
     public void StartNewRound() 
     {
         //spawnEnemies();   
+        waveRunning = true;
     }
 }

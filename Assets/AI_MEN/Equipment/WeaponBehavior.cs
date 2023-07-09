@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using UnityEngine.UI;
 
 public class WeaponBehavior : MonoBehaviour
 {
@@ -21,12 +19,11 @@ public class WeaponBehavior : MonoBehaviour
     {
         if ((ownerBehavior.targetLayerMask.value & 1 << collider.gameObject.layer) > 0)
         {
-            Debug.Log("HIT TARGET LAYER");
-            GoonBehavior goon = collider.GetComponent<GoonBehavior>();
-            if (goon)
+            GoonBehavior enemy = collider.GetComponent<GoonBehavior>();
+            if (enemy)
             {
-                Debug.Log("HIT GOON: " + goon.name);
-                ownerBehavior.damageTarget(goon);
+                //Debug.Log("HIT GOON: " + goon.name);
+                ownerBehavior.damageTarget(enemy);
             }
         }
     }

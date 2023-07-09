@@ -29,6 +29,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8858989642459038711}
+  - {fileID: 1562567725144815714}
   m_Father: {fileID: 6673656702768763386}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -46,7 +47,7 @@ GameObject:
   - component: {fileID: 6445002747667878696}
   - component: {fileID: 1467377240935445692}
   m_Layer: 6
-  m_Name: GOON Sword-man
+  m_Name: GenericAIUnit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +67,7 @@ Transform:
   m_Children:
   - {fileID: 9005178295089656695}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &899333276528585219
 SpriteRenderer:
@@ -148,6 +149,7 @@ MonoBehaviour:
   weapon: {fileID: 0}
   armor: {fileID: 0}
   target: {fileID: 0}
+  targetVector2: {x: 0, y: 0}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -363,4 +365,70 @@ BoxCollider2D:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8631148145288022944, guid: 11030c13c1c8f604d9aa10b734303cc0, type: 3}
   m_PrefabInstance: {fileID: 952101919269636183}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2357405427912608015
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9005178295089656695}
+    m_Modifications:
+    - target: {fileID: 930466909634037416, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+      propertyPath: m_Name
+      value: Unarmed
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825936174408544621, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825936174408544621, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825936174408544621, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825936174408544621, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825936174408544621, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825936174408544621, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825936174408544621, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825936174408544621, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825936174408544621, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825936174408544621, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825936174408544621, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+--- !u!4 &1562567725144815714 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3825936174408544621, guid: d4b032fdaf7b18e4c88d23aa3febb868, type: 3}
+  m_PrefabInstance: {fileID: 2357405427912608015}
   m_PrefabAsset: {fileID: 0}

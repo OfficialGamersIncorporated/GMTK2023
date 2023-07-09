@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class GoonBehavior : MonoBehaviour
 {
@@ -35,33 +36,50 @@ public class GoonBehavior : MonoBehaviour
 
     //TARGETING
     [SerializeField] GameObject target;
+    [SerializeField] Vector2 targetVector2;
     public LayerMask targetLayerMask;
+    float targetTimer;
 
     //UTILITY
     [SerializeField] GameObject weaponHolder;
     [SerializeField] float distanceToTarget;
     [SerializeField] bool canAttack = true;
     [SerializeField] bool hasTarget = false;
+    Rigidbody2D rb;
 
+    private void Start()
+    {
+        gameControl = GameObject.Find("GameControl").GetComponent<GameControl>();
+        rb = gameObject.GetComponent<Rigidbody2D>();
+    }
 
     private void OnEnable()
     {
-        gameControl = GameObject.Find("GameControl").GetComponent<GameControl>();
-
         weaponStats = weapon.GetComponent<WeaponBehavior>().weaponStats;
+        //Debug.Log("AttackSpeed: " + weaponStats.weaponAttackSpeed);
+        //Debug.Log("AttackDamage: " + weaponStats.weaponDamage);
+        //Debug.Log("AttackRange: " + weaponStats.weaponRange);
         armorStats = armor.GetComponent<ArmorBehavior>().armorStats;
+        //Debug.Log("ArmorBonusSTR: " + armorStats.bonusSTR);
+        //Debug.Log("ArmorBonusDEX: " + armorStats.bonusDEX);
+        //Debug.Log("ArmorBonusCON: " + armorStats.bonusCON);
+        //Debug.Log("ArmorBonusAGL: " + armorStats.bonusAGL);
 
         ApplyStats();
         hitpoints = maxHitpoints;
         
-
         weaponAnimator = weapon.GetComponent<Animator>();
         weaponAnimator.SetFloat("attackSpeed", attackSpeed);
-
     }
 
     void Update()
     {
+        if (distanceToTarget > 1)
+        {
+            targetTimer += Time.deltaTime;
+        }
+        
+
         if (gameControl.waveRunning && !hasTarget)
         {
             GetTarget();
@@ -69,18 +87,35 @@ public class GoonBehavior : MonoBehaviour
 
         if (hasTarget)
         {
+            if (targetTimer >= 0.5f)
+            {
+                GetTarget();
+                targetTimer = 0;
+            }
+
             if (!target.activeSelf)
             {
                 GetTarget();
             }
+            else
+            {
+                targetVector2 = target.transform.position - transform.position;
+            }
 
             MoveToRange();
+
             if (distanceToTarget < attackRange && canAttack)
             {
+                rb.velocity = Vector2.zero;
                 weaponAnimator.SetTrigger("Attack");
                 canAttack = false;
                 StartCoroutine(AttackCooldown());
             }
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
+            // Return to origin
         }
     }
 
@@ -90,7 +125,8 @@ public class GoonBehavior : MonoBehaviour
         weaponHolder.transform.up = target.transform.position - transform.position;
         if (distanceToTarget > attackRange)
         {
-            transform.position = Vector2.MoveTowards(transform.position, target.transform.position, Time.deltaTime * moveSpeed);
+            rb.velocity = targetVector2.normalized * moveSpeed;
+            //transform.position = Vector2.MoveTowards(transform.position, target.transform.position, Time.deltaTime * moveSpeed);
         }
     }
 
@@ -132,6 +168,7 @@ public class GoonBehavior : MonoBehaviour
     void GetTarget()
     {
         Collider2D targetCollider = Physics2D.CircleCast(transform.position, perception, Vector2.zero, perception, targetLayerMask).collider;
+        //Physics2D.CircleCast();
         if (targetCollider != null)
         {
             target = targetCollider.gameObject;
@@ -152,7 +189,6 @@ public class GoonBehavior : MonoBehaviour
     {
         yield return new WaitForSeconds(1 / attackSpeed);
         canAttack = true;
-        Debug.Log("ATTACK COOLDOWN COMPLETE");
     }
 
 }
