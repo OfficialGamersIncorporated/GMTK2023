@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -52,8 +53,17 @@ public class GoonBehavior : MonoBehaviour
     //UI
     [SerializeField] HealthbarBehavior healthbar;
 
+    //AUDIO
+    AudioSource audioSource;
+    [SerializeField] AudioClip[] footstepSound;
+    [SerializeField] AudioClip attackSound;
+    [SerializeField] AudioClip deathSound;
+    [SerializeField] AudioClip hurtSound;
+    [SerializeField] AudioClip strikeSound;
+
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         gameControl = GameObject.Find("GameControl").GetComponent<GameControl>();
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
@@ -128,6 +138,10 @@ public class GoonBehavior : MonoBehaviour
         distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
         if (distanceToTarget > attackRange)
         {
+
+            int rand = Random.Range(0, footstepSound.Length);
+            AudioClip currentFootstep = footstepSound[rand];
+            audioSource.PlayOneShot(currentFootstep);
             rb.velocity = targetVector2.normalized * moveSpeed;
             //rb.MovePosition(rb.position + moveSpeed * Time.deltaTime * targetVector2.normalized);
         }
@@ -155,7 +169,10 @@ public class GoonBehavior : MonoBehaviour
             //Death animation
             Debug.Log("IM DEAD FR FR");
             gameObject.SetActive(false);
+            audioSource.PlayOneShot(deathSound);
+            return;
         }
+        audioSource.PlayOneShot(hurtSound);
     }
 
     void ApplyStats()
@@ -225,11 +242,13 @@ public class GoonBehavior : MonoBehaviour
 
     public void damageTarget(GoonBehavior targetStats)
     {
+        audioSource.PlayOneShot(strikeSound);
         targetStats.TakeHit(damage, transform.position, knockback);
     }
 
     void Attack()
     {
+        audioSource.PlayOneShot(attackSound);
         weaponBehavior.Attack();
         canAttack = false;
         StartCoroutine(AttackCooldown());

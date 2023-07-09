@@ -9,7 +9,6 @@ public class ProjectileBehavior : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collider)
     {
-        Debug.Log("COLLISION DETECTED WITH: " + collider.gameObject.name);
         GetComponent<Collider2D>().enabled = false;
         gameObject.transform.parent = collider.gameObject.transform;
         GetComponent<Rigidbody2D>().velocity = Vector3.zero;
@@ -20,7 +19,6 @@ public class ProjectileBehavior : MonoBehaviour
             if (enemy)
             {
                 enemy.TakeHit(damage, Vector3.zero, 0);
-                Debug.Log("Dealing " + damage + " damage to " + collider.gameObject.name);
             }
             
         }
