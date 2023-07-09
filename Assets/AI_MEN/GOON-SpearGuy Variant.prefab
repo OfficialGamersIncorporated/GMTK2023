@@ -52,6 +52,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 545748490542871670, guid: 2b8b6e3137e5caf4795baff0df100d0a, type: 3}
+      propertyPath: m_Color.b
+      value: 0.57186437
+      objectReference: {fileID: 0}
+    - target: {fileID: 545748490542871670, guid: 2b8b6e3137e5caf4795baff0df100d0a, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 545748490542871670, guid: 2b8b6e3137e5caf4795baff0df100d0a, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2396610018551118205, guid: 2b8b6e3137e5caf4795baff0df100d0a, type: 3}
       propertyPath: m_Name
       value: GOON-SpearGuy Variant
@@ -71,6 +83,10 @@ PrefabInstance:
     - target: {fileID: 5870450954034765974, guid: 2b8b6e3137e5caf4795baff0df100d0a, type: 3}
       propertyPath: targetLayerMask.m_Bits
       value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 6135097694699363959, guid: 2b8b6e3137e5caf4795baff0df100d0a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

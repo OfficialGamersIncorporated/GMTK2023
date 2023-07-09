@@ -50,19 +50,21 @@ public class DungeonEditor : MonoBehaviour {
     }
     void ColorUnit(Transform unit, Color color) {
         //  this code it temporary atm.
-        MeshRenderer renderer = unit.GetComponent<MeshRenderer>();
-        if(renderer != null)
-            renderer.material.color = color;
+        //MeshRenderer renderer = unit.GetComponent<MeshRenderer>();
+        //if(renderer != null)
+        //    renderer.material.color = color;
+
+        GoonBehavior goon = unit.GetComponent<GoonBehavior>();
+        if(goon && goon.characterVisual)
+            goon.characterVisual.color = color;
     }
     void ClearColliders(Transform room) {
         Collider2D mainCollider = room.GetComponent<Collider2D>();
         if(mainCollider)
             Destroy(mainCollider);
 
-        foreach(Transform child in room.transform) {
-            Collider2D collider = child.GetComponent<Collider2D>();
-            if(collider)
-                Destroy(collider);
+        foreach(Collider2D child in room.GetComponentsInChildren<Collider2D>()) {
+            Destroy(child);
         }
     }
     void DeltaRoomOrderInLayer(Transform room, int orderInLayerDelta) {

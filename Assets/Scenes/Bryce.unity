@@ -365,7 +365,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 6.875
+  orthographic size: 7.03125
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -770,6 +770,18 @@ PrefabInstance:
     - target: {fileID: 4597409892012218411, guid: c403f059bb6f65641a052cdc2588c9b9, type: 3}
       propertyPath: m_Name
       value: GOON-SpearGuy Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 6466015934121898308, guid: c403f059bb6f65641a052cdc2588c9b9, type: 3}
+      propertyPath: m_Color.b
+      value: 0.7511432
+      objectReference: {fileID: 0}
+    - target: {fileID: 6466015934121898308, guid: c403f059bb6f65641a052cdc2588c9b9, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6466015934121898308, guid: c403f059bb6f65641a052cdc2588c9b9, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6797947515868033948, guid: c403f059bb6f65641a052cdc2588c9b9, type: 3}
       propertyPath: m_AnchorMax.y
