@@ -10,7 +10,7 @@ public class WaveSpawner : MonoBehaviour
 {
     public List<Enemy> enemies = new List<Enemy>();
     public int currentWave;
-    public int currentWaveValue;
+    private int currentWaveValue;
     public int baseWaveValue;
     private List<GameObject> enemiesToSpawn = new List<GameObject>();
 
@@ -26,11 +26,9 @@ public class WaveSpawner : MonoBehaviour
 
     // these are private varibles to help build units out in a triange
     private const int TRIANGLE_X = 0;
-    private const int TRIANGLE_Y = 0;
+    private const int TRIANGLE_Y = 1;
     private int triangleHeight = 1;
     private int triangleWidth = 1;
-    private float triangleCoordWidth = 1;
-    private float triangleCoordHeight = 1;
     // item1 = width, item2 = height
     private List<int> currentTriangleCoord;
 
@@ -72,18 +70,21 @@ public class WaveSpawner : MonoBehaviour
         // nextSpawn is where we will be spawning, and update spawnHereNow for where you want to go next spawn
         Vector3 spawnHereNow = nextSpawn;
 
+        print("SPAWN");
+        print("X: " + currentTriangleCoord[0]);
+        print("Y: " + currentTriangleCoord[1]);
         // time to make new triangle row
         if (currentTriangleCoord[TRIANGLE_X] == currentTriangleCoord[TRIANGLE_Y])
         {
             // go down by pre-determined height, and go left by the pre-determined width times the width of the previous row
-            nextSpawn.y -= triangleCoordHeight;
-            nextSpawn.x -= triangleCoordWidth * (currentTriangleCoord[0]);
+            nextSpawn.y -= triangleHeight;
+            nextSpawn.x -= triangleWidth * (currentTriangleCoord[0]);
             currentTriangleCoord[TRIANGLE_X] = 1;// reset x to 1
             currentTriangleCoord[TRIANGLE_Y] = currentTriangleCoord[TRIANGLE_Y] + 2; // y is now
             return spawnHereNow;
         }
         // move right and move x,y index for triangle
-        nextSpawn.x += triangleCoordWidth;
+        nextSpawn.x += triangleWidth;
         currentTriangleCoord[TRIANGLE_X]++;
         return spawnHereNow;
     }
