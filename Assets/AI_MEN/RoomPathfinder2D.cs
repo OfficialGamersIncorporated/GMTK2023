@@ -9,7 +9,6 @@ public class RoomPathfinder2D {
     //}
 
     static void DisplayPathRecursive(RoomPathfindingNode node) {
-        node.Room.FCost.color = Color.red;
         if (node.Parent != null)
             DisplayPathRecursive(node.Parent);
     }
@@ -149,9 +148,6 @@ class RoomPathfindingNode {
     public float GetFCost(Vector3 endPos) {
         float hCost = GetHCost(endPos);
         float gCost = GetGCost();
-        Room.FCost.text = (hCost + gCost).ToString();
-        Room.GCost.text = GCost.ToString();
-        Room.HCost.text = hCost.ToString();
         return hCost + gCost;
     }
     public float GetHCost(Vector3 endPos) {

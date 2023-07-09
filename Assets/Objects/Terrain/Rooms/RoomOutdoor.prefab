@@ -2121,15 +2121,10 @@ MonoBehaviour:
   - Bearing: 0
     BlankWall: {fileID: 6816080224146676417}
     Doorway: {fileID: 1262650556625650786}
-  - Bearing: 2
-    BlankWall: {fileID: 7465773117547418712}
-    Doorway: {fileID: 2246183364282106775}
-  - Bearing: 1
-    BlankWall: {fileID: 8432975322187252306}
-    Doorway: {fileID: 6132387533650455311}
-  - Bearing: 3
-    BlankWall: {fileID: 2842935461209188882}
-    Doorway: {fileID: 7255631107133043762}
+  ConnectedRooms: []
+  FCost: {fileID: 0}
+  HCost: {fileID: 0}
+  GCost: {fileID: 0}
 --- !u!1 &6132387533650455311
 GameObject:
   m_ObjectHideFlags: 0
