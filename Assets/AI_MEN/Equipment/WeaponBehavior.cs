@@ -28,7 +28,7 @@ public class WeaponBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if ((ownerBehavior.targetLayerMask.value & 1 << collider.gameObject.layer) > 0)
+        if ((ownerBehavior.targetLayerMask.value & 1 << collider.gameObject.layer) > 0 && isAttacking)
         {
             GoonBehavior enemy = collider.GetComponent<GoonBehavior>();
             if (enemy)

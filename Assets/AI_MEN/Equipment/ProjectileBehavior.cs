@@ -26,6 +26,11 @@ public class ProjectileBehavior : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        Destroy(gameObject);
+    }
+
     public void SetStats(int DEXParam, LayerMask layerMaskParam)
     {
         damage = DEXParam + 1;
