@@ -70,9 +70,9 @@ public class WaveSpawner : MonoBehaviour
         // nextSpawn is where we will be spawning, and update spawnHereNow for where you want to go next spawn
         Vector3 spawnHereNow = nextSpawn;
 
-        print("SPAWN");
-        print("X: " + currentTriangleCoord[0]);
-        print("Y: " + currentTriangleCoord[1]);
+        //print("SPAWN");
+        //print("X: " + currentTriangleCoord[0]);
+        //print("Y: " + currentTriangleCoord[1]);
         // time to make new triangle row
         if (currentTriangleCoord[TRIANGLE_X] == currentTriangleCoord[TRIANGLE_Y])
         {
