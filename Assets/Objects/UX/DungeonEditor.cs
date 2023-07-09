@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class DungeonEditor : MonoBehaviour {
     public enum EditorPlacementType { None, Room, Unit }
@@ -20,13 +22,14 @@ public class DungeonEditor : MonoBehaviour {
     public Color HoverColorValid = Color.green;
     Transform selectionHighlight;
     Camera cam;
+    EventSystem eventSystem;
 
 
     public void SetPlacementMode(int index) {
         CurrentPlacementMode = (EditorPlacementType)index;
 
         if (selectionHighlight != null)
-            Destroy(selectionHighlight);
+            Destroy(selectionHighlight.gameObject);
         if(CurrentPlacementMode == EditorPlacementType.Room) {
             selectionHighlight = Instantiate<Room>(RoomToPlace).transform;
             ColorRoom(selectionHighlight, HoverColorInvalid);
@@ -35,6 +38,7 @@ public class DungeonEditor : MonoBehaviour {
             selectionHighlight.parent = MainGrid.Singleton.transform;
         } else if (CurrentPlacementMode == EditorPlacementType.Unit) {
             selectionHighlight = Instantiate<Transform>(UnitToPlace);
+            ClearColliders(selectionHighlight);
         }
     }
     void ColorRoom(Transform room, Color color) {
@@ -74,12 +78,12 @@ public class DungeonEditor : MonoBehaviour {
         rounded.Scale(roundTo);
         return rounded;
     }
-    bool CheckUnitPlacementValid(Vector3 worldPos) { // TODO check if the unit is being placed inside the room and not just outside it
+    bool CheckUnitPlacementValid(Vector3 worldPos) {
         bool foundRoom = false;
         Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(worldPos, .5f);
         foreach(Collider2D overlappingCollider in overlappingColliders) {
             if(!overlappingCollider.isTrigger) return false;
-            if(overlappingCollider.CompareTag("Room")) foundRoom = true;
+            if(overlappingCollider.CompareTag("UnitPlacementZone")) foundRoom = true;
         }
         return foundRoom;
     }
@@ -102,6 +106,8 @@ public class DungeonEditor : MonoBehaviour {
         newRoom.RefereshEnterances();
     }
     void Start() {
+        eventSystem = EventSystem.current;
+
         cam = GetComponent<Camera>();
     }
     void Update() {
@@ -118,7 +124,7 @@ public class DungeonEditor : MonoBehaviour {
             else
                 ColorRoom(selectionHighlight, HoverColorInvalid);
 
-            if(Input.GetButtonDown("Fire1")) {
+            if(Input.GetButtonDown("Fire1") && !eventSystem.IsPointerOverGameObject()) {
                 TryPlaceRoom(SnappedHoverPoint);
             }
 
@@ -130,7 +136,7 @@ public class DungeonEditor : MonoBehaviour {
             else
                 ColorUnit(selectionHighlight, HoverColorInvalid);
 
-            if(Input.GetButtonDown("Fire1")) {
+            if(Input.GetButtonDown("Fire1") && !eventSystem.IsPointerOverGameObject()) {
                 TryPlaceUnit(mouseWorldPos);
             }
         }

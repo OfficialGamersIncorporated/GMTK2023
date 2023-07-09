@@ -16,7 +16,8 @@ public class Room : MonoBehaviour {
     };
     [HideInInspector] // enable debugging in the inspector to view this in the editor.
     public List<RoomConnection> ConnectedRooms = new List<RoomConnection>();
-
+    [HideInInspector]
+    public Collider2D UnitPlacementValidityCheck;
 
     public RoomConnection FindConnectedRoomByBearing(EnteranceBearing bearing) {
         foreach(RoomConnection connectedRoom in ConnectedRooms) {
