@@ -222,7 +222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemies:
-  - enemyPrefab: {fileID: 8655166545427860745, guid: fb10aa780e9637044b53b06f14eb13f5, type: 3}
+  - enemyPrefab: {fileID: 1323540925413479671, guid: 07bce91601e796e47a9f2dc9113fe675, type: 3}
     cost: 20
   currentWave: 1
   baseWaveValue: 100
@@ -435,7 +435,7 @@ MonoBehaviour:
   CurrentPlacementMode: 0
   RoomToPlace: {fileID: 2505566510549205071, guid: e78b5eaa9a1458c42900479f4a5c2f2f, type: 3}
   RoomGridSize: {x: 12, y: 8}
-  UnitToPlace: {fileID: 91149734513177532, guid: 32c3d66412fd90540925e1745e24e463, type: 3}
+  UnitToPlace: {fileID: 1967374316198429912, guid: c403f059bb6f65641a052cdc2588c9b9, type: 3}
   HoverColorInvalid: {r: 1, g: 0, b: 0.255, a: 0.5176471}
   HoverColorValid: {r: 0.2688679, g: 1, b: 0.2688679, a: 0.5019608}
 --- !u!114 &519420035

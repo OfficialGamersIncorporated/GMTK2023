@@ -13,6 +13,7 @@ public class WeaponBehavior : MonoBehaviour
     Transform projectileOrigin;
 
     Animator anim;
+    Animator charAnim;
 
     [SerializeField] GameObject projectile;
     [SerializeField] float launchVelocity = 100;
@@ -20,9 +21,15 @@ public class WeaponBehavior : MonoBehaviour
 
     private void Start()
     {
-        ownerBehavior = transform.root.GetComponent<GoonBehavior>();
+        ownerBehavior = GetComponentInParent<GoonBehavior>(); //transform.root.GetComponent<GoonBehavior>(); // using root means the units can't be placed in an empty gameobject.
+
         anim = gameObject.GetComponent<Animator>();
         anim.SetFloat("attackSpeed", ownerBehavior.attackSpeed);
+        if(ownerBehavior.characterVisual) {
+            charAnim = ownerBehavior.characterVisual.GetComponent<Animator>();
+            charAnim.SetFloat("attackSpeed", ownerBehavior.attackSpeed);
+        }
+
         projectileOrigin = ownerBehavior.projectileOrigin;
     }
 
@@ -42,6 +49,8 @@ public class WeaponBehavior : MonoBehaviour
     public void Attack()
     {
         anim.SetTrigger("Attack");
+        if (charAnim)
+            charAnim.SetTrigger("Attack");
         if (isRanged)
         {
             GameObject newProjectile = Instantiate(projectile, projectileOrigin.position, transform.rotation * Quaternion.Euler(0, 0, -90));

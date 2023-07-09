@@ -22,7 +22,7 @@ public class GoonBehavior : MonoBehaviour
     [SerializeField] float attackRange;
     [SerializeField] float maxHitpoints;
     [SerializeField] float hitpoints;
-    [SerializeField] float moveSpeed;
+    [SerializeField] public float moveSpeed;
     [SerializeField] float knockback;
 
     //INDEPENDENT STATS
@@ -30,13 +30,14 @@ public class GoonBehavior : MonoBehaviour
 
     //EQUPIMENT
     public GameObject weapon;
+    public SpriteRenderer characterVisual;
     WeaponBehavior weaponBehavior;
     WeaponStats weaponStats;
     public GameObject armor;
     ArmorStats armorStats;
 
     //TARGETING
-    [SerializeField] GameObject target;
+    [SerializeField] public GameObject target;
     [SerializeField] Vector2 targetVector2;
     public LayerMask targetLayerMask;
     float targetTimer;
@@ -76,48 +77,34 @@ public class GoonBehavior : MonoBehaviour
         healthbar.SetHealth(hitpoints, maxHitpoints);
     }
 
-    void Update()
-    {
-        if (distanceToTarget > 1)
-        {
+    void Update() {
+        if(distanceToTarget > 1) {
             targetTimer += Time.deltaTime;
         }
-        
-
-        if (gameControl.waveRunning && !hasTarget)
-        {
+        if(gameControl.waveRunning && !hasTarget) {
             ScanForTarget(perception);
         }
-
-        if (hasTarget)
-        {
+        if(hasTarget) {
             AimAtTarget();
 
-            if (targetTimer >= 0.5f)
-            {
+            if(targetTimer >= 0.5f) {
                 ScanForTarget(perception);
                 targetTimer = 0;
             }
 
-            if (!target.activeSelf)
-            {
+            if(!target.activeSelf) {
                 ScanForTarget(perception);
-            }
-            else
-            {
+            } else {
                 targetVector2 = target.transform.position - transform.position;
             }
 
             MoveToRange();
 
-            if (distanceToTarget < attackRange && canAttack)
-            {
+            if(distanceToTarget < attackRange && canAttack) {
                 rb.velocity = Vector2.zero;
                 Attack();
             }
-        }
-        else
-        {
+        } else {
             rb.velocity = Vector2.zero;
             // Return to origin
         }
@@ -133,9 +120,11 @@ public class GoonBehavior : MonoBehaviour
         }
     }
 
-    void AimAtTarget()
-    {
-        weaponHolder.transform.up = target.transform.position - transform.position;
+    void AimAtTarget() {
+        Vector3 toEnemy = (target.transform.position - transform.position).normalized;
+        if(characterVisual)
+            characterVisual.flipX = toEnemy.x < 0;
+        weaponHolder.transform.up = toEnemy;
     }
 
     public void TakeHit(float incomingDamage, Vector3 attacker, float knockbackParam)

@@ -8,9 +8,12 @@ public class RoomPathfinder2D {
     //    Debug.LogError("RoomPathfinder2D should not be added to a gameobject as a component. Call its static methods isntead.");
     //}
 
-    static void DisplayPathRecursive(RoomPathfindingNode node) {
-        if (node.Parent != null)
-            DisplayPathRecursive(node.Parent);
+    public static void DebugDrawPath(Vector3 startPos, List<Vector3> path) {
+        Vector3 last = startPos;
+        foreach(Vector3 pathPoint in path) {
+            Debug.DrawLine(last, pathPoint, Color.yellow, 1);
+            last = pathPoint;
+        }
     }
     static List<Vector3> CalculateVector3PathFromFinalNode(RoomPathfindingNode finalNode) {
         List<Vector3> path = new List<Vector3>();
@@ -25,7 +28,6 @@ public class RoomPathfinder2D {
 
         return path;
     }
-
     static RoomPathfindingNode GetRoomWithLowestFCost(List<RoomPathfindingNode> nodes, Vector3 startPos, Vector3 endPos) {
         RoomPathfindingNode cheapestRoom = nodes[0];
         float lowestFCost = Mathf.Infinity;
@@ -51,7 +53,7 @@ public class RoomPathfinder2D {
         }
         return null;
     }
-    static Room GetClosestRoom(Vector3 position) {
+    public static Room GetClosestRoom(Vector3 position) {
         float closestRoomDistance = Mathf.Infinity;
         Room closestRoom = null;
 
@@ -124,7 +126,6 @@ public class RoomPathfinder2D {
             }
         }
 
-        DisplayPathRecursive(finalNode);
         List<Vector3> path = CalculateVector3PathFromFinalNode(finalNode);
         //path.Insert(0, startPos);
         path.Add(targetPos);
