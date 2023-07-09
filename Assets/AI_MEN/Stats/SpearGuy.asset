@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b29ad8bd29f40304babcd267a4cbb390, type: 3}
   m_Name: SpearGuy
   m_EditorClassIdentifier: 
-  STR: 0
+  STR: 1
   DEX: 2
   CON: 2
   AGL: 3

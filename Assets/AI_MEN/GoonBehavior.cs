@@ -18,7 +18,7 @@ public class GoonBehavior : MonoBehaviour
     public int currentCON;
     public int currentAGL;
     [SerializeField] float damage;
-    [SerializeField] float attackSpeed;
+    public float attackSpeed;
     [SerializeField] float attackRange;
     [SerializeField] float maxHitpoints;
     [SerializeField] float hitpoints;
@@ -31,7 +31,6 @@ public class GoonBehavior : MonoBehaviour
     public GameObject weapon;
     WeaponBehavior weaponBehavior;
     WeaponStats weaponStats;
-    Animator weaponAnimator;
     public GameObject armor;
     ArmorStats armorStats;
 
@@ -47,6 +46,10 @@ public class GoonBehavior : MonoBehaviour
     bool hasTarget = false;
     Rigidbody2D rb;
     public Transform projectileOrigin;
+    [SerializeField] GameObject weaponHolder;
+
+    //UI
+    [SerializeField] HealthbarBehavior healthbar;
 
     private void Start()
     {
@@ -69,8 +72,7 @@ public class GoonBehavior : MonoBehaviour
 
         ApplyStats();
         hitpoints = maxHitpoints;
-       
-        weaponAnimator.SetFloat("attackSpeed", attackSpeed);
+        healthbar.SetHealth(hitpoints, maxHitpoints);
     }
 
     void Update()
@@ -83,20 +85,22 @@ public class GoonBehavior : MonoBehaviour
 
         if (gameControl.waveRunning && !hasTarget)
         {
-            GetTarget();
+            ScanForTarget(perception);
         }
 
         if (hasTarget)
         {
+            AimAtTarget();
+
             if (targetTimer >= 0.5f)
             {
-                GetTarget();
+                ScanForTarget(perception);
                 targetTimer = 0;
             }
 
             if (!target.activeSelf)
             {
-                GetTarget();
+                ScanForTarget(perception);
             }
             else
             {
@@ -123,16 +127,20 @@ public class GoonBehavior : MonoBehaviour
         distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
         if (distanceToTarget > attackRange)
         {
-            //rb.velocity = targetVector2.normalized * moveSpeed;
-            rb.MovePosition(rb.position + moveSpeed * Time.deltaTime * targetVector2.normalized);
-            rb.transform.up = target.transform.position - transform.position;
-            //transform.position = Vector2.MoveTowards(transform.position, target.transform.position, Time.deltaTime * moveSpeed);
+            rb.velocity = targetVector2.normalized * moveSpeed;
+            //rb.MovePosition(rb.position + moveSpeed * Time.deltaTime * targetVector2.normalized);
         }
+    }
+
+    void AimAtTarget()
+    {
+        weaponHolder.transform.up = target.transform.position - transform.position;
     }
 
     public void TakeHit(float incomingDamage)
     {
         hitpoints -= incomingDamage;
+        healthbar.SetHealth(hitpoints, maxHitpoints);
 
         if (hitpoints <= 0)
         {
@@ -160,23 +168,49 @@ public class GoonBehavior : MonoBehaviour
         damage = currentSTR + weaponStats.weaponDamage;
         attackSpeed = ((1.2f * currentDEX) / 2) * 1 + weaponStats.weaponAttackSpeed;
         maxHitpoints = (currentCON * 1.2f) + unitStats.baseHP;
-        moveSpeed = (((1.2f * currentAGL) / 2) * 1 + unitStats.baseMovementSpeed);
+        moveSpeed = (((1.2f * currentAGL) / 2) * 1 + unitStats.baseMovementSpeed) / 2;
 
         attackRange = weaponStats.weaponRange;
     }
 
-    void GetTarget()
+    void ScanForTarget(float scanRange)
     {
-        Collider2D targetCollider = Physics2D.OverlapCircle(transform.position, perception, targetLayerMask).GetComponent<Collider2D>();
-        if (targetCollider != null)
+        List<GameObject> targetsInRange = new();
+        Collider2D[] collidersInRange = Physics2D.OverlapCircleAll(transform.root.position, scanRange, targetLayerMask.value);
+
+        if (collidersInRange.Length > 0)
         {
-            target = targetCollider.gameObject;
+            foreach (Collider2D collider in collidersInRange)
+            {
+                GameObject toGameObject = collider.gameObject;
+                targetsInRange.Add(toGameObject);
+            }
+            target = GetClosestEnemy(targetsInRange);
             hasTarget = true;
+            targetVector2 = target.transform.position;
         }
-        else
+        if (collidersInRange.Length == 0)
         {
             hasTarget = false;
         }
+
+    }
+
+    GameObject GetClosestEnemy(List<GameObject> targetsInRange)
+    {
+        GameObject tMin = null;
+        float minDist = Mathf.Infinity;
+        Vector3 currentPos = transform.position;
+        foreach (GameObject t in targetsInRange)
+        {
+            float dist = Vector3.Distance(t.transform.position, currentPos);
+            if (dist < minDist)
+            {
+                tMin = t;
+                minDist = dist;
+            }
+        }
+        return tMin;
     }
 
     public void damageTarget(GoonBehavior targetStats)

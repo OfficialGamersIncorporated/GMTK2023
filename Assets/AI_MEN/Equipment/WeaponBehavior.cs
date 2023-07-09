@@ -20,8 +20,9 @@ public class WeaponBehavior : MonoBehaviour
 
     private void Start()
     {
-        anim = gameObject.GetComponent<Animator>();
         ownerBehavior = transform.root.GetComponent<GoonBehavior>();
+        anim = gameObject.GetComponent<Animator>();
+        anim.SetFloat("attackSpeed", ownerBehavior.attackSpeed);
         projectileOrigin = ownerBehavior.projectileOrigin;
     }
 

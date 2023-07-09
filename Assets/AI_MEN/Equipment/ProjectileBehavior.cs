@@ -16,7 +16,13 @@ public class ProjectileBehavior : MonoBehaviour
         GetComponent<Rigidbody2D>().angularVelocity = 0;
         if ((layerMask.value & 1 << collider.gameObject.layer) > 0)
         {
-            Debug.Log("Dealing " + damage + " damage to " + collider.gameObject.name);
+            GoonBehavior enemy = collider.gameObject.GetComponent<GoonBehavior>();
+            if (enemy)
+            {
+                enemy.TakeHit(damage);
+                Debug.Log("Dealing " + damage + " damage to " + collider.gameObject.name);
+            }
+            
         }
     }
 
