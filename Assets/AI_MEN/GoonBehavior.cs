@@ -23,8 +23,9 @@ public class GoonBehavior : MonoBehaviour
     [SerializeField] float maxHitpoints;
     [SerializeField] float hitpoints;
     [SerializeField] float moveSpeed;
+    [SerializeField] float knockback;
 
-
+    //INDEPENDENT STATS
     [SerializeField] float perception; // Make a stat that influences range? Or just tweak until feels good
 
     //EQUPIMENT
@@ -137,10 +138,17 @@ public class GoonBehavior : MonoBehaviour
         weaponHolder.transform.up = target.transform.position - transform.position;
     }
 
-    public void TakeHit(float incomingDamage)
+    public void TakeHit(float incomingDamage, Vector3 attacker, float knockbackParam)
     {
         hitpoints -= incomingDamage;
         healthbar.SetHealth(hitpoints, maxHitpoints);
+
+        Vector2 targetHeadingAway = (transform.position - attacker).normalized;
+
+        if (knockbackParam > 0)
+        {
+            rb.AddForce(targetHeadingAway * knockbackParam * 5, ForceMode2D.Impulse);
+        }
 
         if (hitpoints <= 0)
         {
@@ -171,6 +179,8 @@ public class GoonBehavior : MonoBehaviour
         moveSpeed = (((1.2f * currentAGL) / 2) * 1 + unitStats.baseMovementSpeed) / 2;
 
         attackRange = weaponStats.weaponRange;
+
+        knockback = currentSTR;
     }
 
     void ScanForTarget(float scanRange)
@@ -215,7 +225,7 @@ public class GoonBehavior : MonoBehaviour
 
     public void damageTarget(GoonBehavior targetStats)
     {
-        targetStats.TakeHit(damage);
+        targetStats.TakeHit(damage, transform.position, knockback);
     }
 
     void Attack()

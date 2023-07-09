@@ -19,7 +19,7 @@ public class ProjectileBehavior : MonoBehaviour
             GoonBehavior enemy = collider.gameObject.GetComponent<GoonBehavior>();
             if (enemy)
             {
-                enemy.TakeHit(damage);
+                enemy.TakeHit(damage, Vector3.zero, 0);
                 Debug.Log("Dealing " + damage + " damage to " + collider.gameObject.name);
             }
             
