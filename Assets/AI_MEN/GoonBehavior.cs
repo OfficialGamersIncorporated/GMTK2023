@@ -13,10 +13,10 @@ public class GoonBehavior : MonoBehaviour
     [SerializeField] UnitStats unitStats;
 
     //GAMEPLAY STATS
-    [SerializeField] int currentSTR;
-    [SerializeField] int currentDEX;
-    [SerializeField] int currentCON;
-    [SerializeField] int currentAGL;
+    public int currentSTR;
+    public int currentDEX;
+    public int currentCON;
+    public int currentAGL;
     [SerializeField] float damage;
     [SerializeField] float attackSpeed;
     [SerializeField] float attackRange;
@@ -29,6 +29,7 @@ public class GoonBehavior : MonoBehaviour
 
     //EQUPIMENT
     public GameObject weapon;
+    WeaponBehavior weaponBehavior;
     WeaponStats weaponStats;
     Animator weaponAnimator;
     public GameObject armor;
@@ -41,11 +42,11 @@ public class GoonBehavior : MonoBehaviour
     float targetTimer;
 
     //UTILITY
-    [SerializeField] GameObject weaponHolder;
-    [SerializeField] float distanceToTarget;
-    [SerializeField] bool canAttack = true;
-    [SerializeField] bool hasTarget = false;
+    float distanceToTarget;
+    bool canAttack = true;
+    bool hasTarget = false;
     Rigidbody2D rb;
+    public Transform projectileOrigin;
 
     private void Start()
     {
@@ -55,7 +56,8 @@ public class GoonBehavior : MonoBehaviour
 
     private void OnEnable()
     {
-        weaponStats = weapon.GetComponent<WeaponBehavior>().weaponStats;
+        weaponBehavior = weapon.GetComponent<WeaponBehavior>();
+        weaponStats = weaponBehavior.weaponStats;
         //Debug.Log("AttackSpeed: " + weaponStats.weaponAttackSpeed);
         //Debug.Log("AttackDamage: " + weaponStats.weaponDamage);
         //Debug.Log("AttackRange: " + weaponStats.weaponRange);
@@ -67,8 +69,7 @@ public class GoonBehavior : MonoBehaviour
 
         ApplyStats();
         hitpoints = maxHitpoints;
-        
-        weaponAnimator = weapon.GetComponent<Animator>();
+       
         weaponAnimator.SetFloat("attackSpeed", attackSpeed);
     }
 
@@ -107,9 +108,7 @@ public class GoonBehavior : MonoBehaviour
             if (distanceToTarget < attackRange && canAttack)
             {
                 rb.velocity = Vector2.zero;
-                weaponAnimator.SetTrigger("Attack");
-                canAttack = false;
-                StartCoroutine(AttackCooldown());
+                Attack();
             }
         }
         else
@@ -122,10 +121,11 @@ public class GoonBehavior : MonoBehaviour
     void MoveToRange()
     {
         distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
-        weaponHolder.transform.up = target.transform.position - transform.position;
         if (distanceToTarget > attackRange)
         {
-            rb.velocity = targetVector2.normalized * moveSpeed;
+            //rb.velocity = targetVector2.normalized * moveSpeed;
+            rb.MovePosition(rb.position + moveSpeed * Time.deltaTime * targetVector2.normalized);
+            rb.transform.up = target.transform.position - transform.position;
             //transform.position = Vector2.MoveTowards(transform.position, target.transform.position, Time.deltaTime * moveSpeed);
         }
     }
@@ -160,15 +160,14 @@ public class GoonBehavior : MonoBehaviour
         damage = currentSTR + weaponStats.weaponDamage;
         attackSpeed = ((1.2f * currentDEX) / 2) * 1 + weaponStats.weaponAttackSpeed;
         maxHitpoints = (currentCON * 1.2f) + unitStats.baseHP;
-        moveSpeed = (((1.2f * currentAGL) / 2) * 1 + unitStats.baseMovementSpeed) / 4;
+        moveSpeed = (((1.2f * currentAGL) / 2) * 1 + unitStats.baseMovementSpeed);
 
         attackRange = weaponStats.weaponRange;
     }
 
     void GetTarget()
     {
-        Collider2D targetCollider = Physics2D.CircleCast(transform.position, perception, Vector2.zero, perception, targetLayerMask).collider;
-        //Physics2D.CircleCast();
+        Collider2D targetCollider = Physics2D.OverlapCircle(transform.position, perception, targetLayerMask).GetComponent<Collider2D>();
         if (targetCollider != null)
         {
             target = targetCollider.gameObject;
@@ -184,6 +183,14 @@ public class GoonBehavior : MonoBehaviour
     {
         targetStats.TakeHit(damage);
     }
+
+    void Attack()
+    {
+        weaponBehavior.Attack();
+        canAttack = false;
+        StartCoroutine(AttackCooldown());
+    }
+
 
     IEnumerator AttackCooldown()
     {

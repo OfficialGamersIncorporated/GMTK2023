@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 452eedff8d25d374ea1d8eeead00b134, type: 3}
-  m_Name: TestWeapon
+  m_Script: {fileID: 11500000, guid: b29ad8bd29f40304babcd267a4cbb390, type: 3}
+  m_Name: Archer
   m_EditorClassIdentifier: 
-  weaponDamage: 2
-  weaponAttackSpeed: 0.75
-  weaponRange: 1
+  STR: 0
+  DEX: 3
+  CON: 0
+  AGL: 0
+  baseHP: 0
+  baseMovementSpeed: 0.5
