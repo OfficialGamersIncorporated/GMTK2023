@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b29ad8bd29f40304babcd267a4cbb390, type: 3}
   m_Name: GenericUnitStats
   m_EditorClassIdentifier: 
-  STR: 0
-  DEX: 0
-  CON: 0
-  AGL: 0
-  baseHP: 0
-  baseMovementSpeed: 0
+  STR: 1
+  DEX: 1
+  CON: 1
+  AGL: 1
+  baseHP: 1
+  baseMovementSpeed: 1

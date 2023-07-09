@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SwordGuy
   m_EditorClassIdentifier: 
   STR: 2
-  DEX: 0
-  CON: 1
-  AGL: 2
-  baseHP: 5
-  baseMovementSpeed: 1
+  DEX: 1
+  CON: 2
+  AGL: 1
+  baseHP: 10
+  baseMovementSpeed: 2

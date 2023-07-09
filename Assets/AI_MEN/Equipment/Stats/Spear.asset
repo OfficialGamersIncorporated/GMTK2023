@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b29ad8bd29f40304babcd267a4cbb390, type: 3}
-  m_Name: Assassin
+  m_Script: {fileID: 11500000, guid: 452eedff8d25d374ea1d8eeead00b134, type: 3}
+  m_Name: Spear
   m_EditorClassIdentifier: 
-  STR: 1
-  DEX: 2
-  CON: 1
-  AGL: 1
-  baseHP: 3
-  baseMovementSpeed: 1
+  weaponDamage: 1
+  weaponAttackSpeed: 1
+  weaponRange: 1

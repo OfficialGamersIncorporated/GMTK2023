@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Bow
   m_EditorClassIdentifier: 
   weaponDamage: 1
-  weaponAttackSpeed: 1
+  weaponAttackSpeed: 0.5
   weaponRange: 5

@@ -10,7 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2222476231794696707, guid: 873522cda2e98db4fa6e01444c42da0f, type: 3}
       propertyPath: m_Name
-      value: BowGuy Variant
+      value: GOON-BowGuy Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222476231794696707, guid: 873522cda2e98db4fa6e01444c42da0f, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4203847673295568624, guid: 873522cda2e98db4fa6e01444c42da0f, type: 3}
       propertyPath: m_RootOrder

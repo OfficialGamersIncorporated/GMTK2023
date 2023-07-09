@@ -15,6 +15,6 @@ MonoBehaviour:
   STR: 3
   DEX: 2
   CON: 4
-  AGL: 0
-  baseHP: 0
+  AGL: 1
+  baseHP: 1
   baseMovementSpeed: 0.75

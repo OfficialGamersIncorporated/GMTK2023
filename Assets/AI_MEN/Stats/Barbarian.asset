@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Barbarian
   m_EditorClassIdentifier: 
   STR: 4
-  DEX: 0
+  DEX: 1
   CON: 3
-  AGL: 0
+  AGL: 1
   baseHP: 15
   baseMovementSpeed: 0.75
